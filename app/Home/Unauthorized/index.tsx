@@ -1,15 +1,16 @@
 
-import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
-import SvgLogo from '../../components/SvgLogo/SvgLogo';
-import axios from 'axios';
+import * as WebBrowser from 'expo-web-browser';
+import React from 'react';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { addUser } from '../../store/slices/userSlice';
-// import { Icon } from 'react-native-vector-icons/Icon';
 
-export default function WelcomeScreen() {
+import SvgLogo from '../../../src/components/SvgLogo/SvgLogo';
+import { addUser } from '../../../src/store/slices/userSlice';
+import { Icon } from 'react-native-vector-icons/Icon';
+
+
+export default function Unauthorized() {
     const dispatch = useDispatch()
     const onGoogleLoginPress = async () => {
         Linking.addEventListener('url', (event) => {

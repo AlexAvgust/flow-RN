@@ -1,12 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-function HomeScreen() {
+export default function _layout() {
     return (
         <View>
-            <Text>HomeScreen</Text>
+            <Text>_layout</Text>
         </View>
     )
 }
-
-export default HomeScreen

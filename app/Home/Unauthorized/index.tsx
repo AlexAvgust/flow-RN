@@ -1,30 +1,38 @@
+import * as Linking from 'expo-linking'
+import * as WebBrowser from 'expo-web-browser'
+import React from 'react'
+import {
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native'
+import { useDispatch } from 'react-redux'
 
-import * as Linking from 'expo-linking';
-import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
-
-import SvgLogo from '../../../src/components/SvgLogo/SvgLogo';
-import { addUser } from '../../../src/store/slices/userSlice';
-import { Icon } from 'react-native-vector-icons/Icon';
+import SvgLogo from '../../../src/components/SvgLogo/SvgLogo'
+import { addUser } from '../../../src/store/slices/userSlice'
 
 
 export default function Unauthorized() {
     const dispatch = useDispatch()
     const onGoogleLoginPress = async () => {
         Linking.addEventListener('url', (event) => {
-            const decodedUserData = decodeURIComponent(event.url.split('?user=')[1]);
+            const decodedUserData = decodeURIComponent(
+                event.url.split('user=')[1]
+            )
             dispatch(addUser(JSON.parse(decodedUserData).user))
         })
-        const redirectUrl = await WebBrowser.openAuthSessionAsync('https://ttl-18h-arp5llfpba-uc.a.run.app/auth')
+        const redirectUrl = await WebBrowser.openAuthSessionAsync(
+            `${process.env.EXPO_PUBLIC_BACKEND_URL}/auth`
+        )
         if (redirectUrl.type === 'success') {
-            const decodedUserData = decodeURIComponent(redirectUrl.url.split('?user=')[1]);
+            const decodedUserData = decodeURIComponent(
+                redirectUrl.url.split('user=')[1]
+            )
             dispatch(addUser(JSON.parse(decodedUserData).user))
         }
-
-    };
-
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -35,13 +43,15 @@ export default function Unauthorized() {
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>
                             {/* <Icon name="logo-google" size={30} color="#fff" /> */}
-                            <Text style={{ marginLeft: 200 }}>Login with Google!</Text>
+                            <Text style={{ marginLeft: 200 }}>
+                                Login with Google!
+                            </Text>
                         </Text>
                     </View>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -84,4 +94,4 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
     },
-});
+})

@@ -1,14 +1,12 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../types/userType";
-
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { User } from '../../types/userType'
 
 type UserState = {
     user: User | null
-   
 }
 
 const initialState: UserState = {
-    user: null
+    user: null,
 }
 
 export const userSlice = createSlice({
@@ -20,8 +18,8 @@ export const userSlice = createSlice({
         },
         removeUser: (state) => {
             state.user = null
-        }
-    }
+        },
+    },
 })
 
 export const { addUser, removeUser } = userSlice.actions

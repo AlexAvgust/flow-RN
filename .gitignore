@@ -35,3 +35,9 @@ yarn-error.*
 *.tsbuildinfo
 
 .history
+.env
+
+#build
+build-*.apk
+*.apk
+/*.apk

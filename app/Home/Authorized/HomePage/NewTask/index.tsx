@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
+import { Form } from '../../../../../src/components/Form/Form'
 
 const NewTask = () => {
     return (
-        <View>
-            <Text>NewTask</Text>
+        <View style={{flex:1}}>
+            <Form />
         </View>
     )
 }

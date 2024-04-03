@@ -4,17 +4,24 @@ import { Stack } from 'expo-router'
 import { Provider } from 'react-redux'
 import { store } from '../src/store/store'
 import { CalendarProvider } from 'react-native-calendars'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import Toast from 'react-native-toast-message'
 
 export default function _layout() {
     return (
-        <CalendarProvider date={Date()}>
-            <Provider store={store}>
-            <Stack screenOptions={{
-                headerShown: false
-            }}>
-                <Stack.Screen name='Home' />
-            </Stack>
-        </Provider>
-        </CalendarProvider >
+        <SafeAreaProvider>
+            <CalendarProvider date={Date()}>
+                <Provider store={store}>
+                    <Stack
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                    >
+                        <Stack.Screen name="Home" />
+                    </Stack>
+                    <Toast />
+                </Provider>
+            </CalendarProvider>
+        </SafeAreaProvider>
     )
 }

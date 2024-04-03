@@ -1,30 +1,80 @@
-import { StyleSheet } from 'react-native'
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet } from 'react-native'
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native-ui-lib'
-import { Link, useRouter, } from 'expo-router'
-import { useRoute } from '@react-navigation/native'
+import { View, Text, SkeletonView, ListItem, Button } from 'react-native-ui-lib'
+import { Link, useRouter } from 'expo-router'
 import MidButton from '../../../../src/components/Buttons/MidButton'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../../src/store/store'
-import { Calendar, ExpandableCalendar, WeekCalendar } from 'react-native-calendars'
+import { ExpandableCalendar } from 'react-native-calendars'
+import moment from 'moment'
+import ScreenSafeContainer from '../../../../src/components/ScreenSafeContainer/ScreenSafeContainer'
 const Homepage = () => {
     const router = useRouter()
-
+    const currentDate = moment().format('D MMMM YYYY')
     const onAddNewTaskPress = () => {
         router.push('/Home/Authorized/HomePage/NewTask')
     }
     return (
-        <View style={styles.container}>
-            <View gap-40 left>
-                <Text marginL-20 marginB-50 style={styles.today}>Today</Text>
-                <ExpandableCalendar style={{backgroundColor: 'none'}} hideKnob={true} />
+        <ScreenSafeContainer>
+            <View style={styles.container}>
+                <View marginB-40 gap-40 left>
+                    <Text marginL-20 style={styles.today}>
+                        Today, <Text style={styles.date}>{currentDate}</Text>
+                    </Text>
+                    <ExpandableCalendar
+                        style={{ backgroundColor: 'none' }}
+                        hideKnob={true}
+                    />
+                </View>
+
+                <View marginB-300>
+                    <ListItem
+                        style={{
+                            flexDirection: 'column',
+                            gap: 30,
+                        }}
+                    >
+                        <Text grey10 text60 marginL-10>
+                            The item
+                        </Text>
+                        <Text grey10 text60 marginL-10>
+                            The item
+                        </Text>
+                        <Text grey10 text60 marginL-10>
+                            The item
+                        </Text>
+                        <Text grey10 text60 marginL-10>
+                            The item
+                        </Text>
+                        <Text grey10 text60 marginL-10>
+                            The item
+                        </Text>
+                        <Text grey10 text60 marginL-10>
+                            The item
+                        </Text>
+                    </ListItem>
+                </View>
+                <Link
+                    style={{ justifyContent: 'center' }}
+                    href={'/Home/Authorized/HomePage/NewTask'}
+                >
+                    <Button
+                        onPress={onAddNewTaskPress}
+                        size={Button.sizes.medium}
+                        label="Add new task"
+                        backgroundColor="#000"
+                        color="#fff"
+                        outlineColor="#000"
+                        outlineWidth={2}
+                        activeBackgroundColor="#000"
+                        activeOpacity={0.6}
+                        style={{
+                            borderWidth: 1,
+                            paddingVertical: 12,
+                            paddingHorizontal: 24,
+                        }}
+                    />
+                </Link>
             </View>
-            <Link href={'/Home/Authorized/HomePage/NewTask'}>
-                <MidButton onPressFunc={onAddNewTaskPress} />
-
-
-            </Link>
-        </View>
+        </ScreenSafeContainer>
     )
 }
 
@@ -33,13 +83,12 @@ export default Homepage
 const styles = StyleSheet.create({
     container: {
         paddingTop: 10,
-        flex: 1,
+        // flex: 1,
         flexDirection: 'column',
-        // justifyContent: 'space-evenly',
         alignItems: 'center',
-
-    }, hiText: {
-        paddingLeft:20,
+    },
+    hiText: {
+        paddingLeft: 20,
         fontSize: 26,
         fontWeight: '700',
         color: '#000',
@@ -51,6 +100,11 @@ const styles = StyleSheet.create({
     today: {
         fontSize: 24,
         color: '#000',
-        fontWeight: '700'
+        fontWeight: '700',
+    },
+    date: {
+        fontSize: 24,
+        color: '#000',
+        fontWeight: '200',
     },
 })

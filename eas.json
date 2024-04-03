@@ -1,0 +1,11 @@
+{
+    "build": {
+        "preview3": {
+            "developmentClient": true,
+            "env": {
+                "BACKEND_URL": "http://10.0.2.2:3000"
+            }
+        },
+        "production": {}
+    }
+}

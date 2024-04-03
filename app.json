@@ -1,34 +1,41 @@
 {
-  "expo": {
-    "name": "flow-RN",
-    "slug": "flow-RN",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
-     "scheme": "flow-app",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": false
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-router"
-    ]
-  }
+    "expo": {
+        "name": "flow-RN",
+        "slug": "flow-RN",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "dark",
+        "scheme": "flowapp",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": false
+        },
+        "android": {
+            "package": "com.yourcompany.flow",
+            "versionCode": 1,
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            }
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "plugins": ["expo-router"],
+        "extra": {
+            "router": {
+                "origin": false
+            },
+            "eas": {
+                "projectId": "99284453-9cd7-4226-b545-d0ae96566313"
+            }
+
+        }
+    }
 }

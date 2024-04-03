@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../src/store/store'
-import { Slot, router, useNavigation } from 'expo-router'
+import { useNavigation } from 'expo-router'
 
 const Home = () => {
     const user = useSelector((state: RootState) => state.user)
@@ -10,18 +10,14 @@ const Home = () => {
     useEffect(() => {
         if (!!user) {
             //@ts-ignore
-            navigation.navigate('Home', { screen: 'Authorized' });
+            navigation.navigate('Home', { screen: 'Authorized' })
         } else {
             //@ts-ignore
-            navigation.navigate('Home', { screen: 'Unauthorized' });
+            navigation.navigate('Home', { screen: 'Unauthorized' })
         }
-    }, [user, navigation]);
+    }, [user, navigation])
 
-    return (
-        <View>
-            <Slot />
-        </View>
-    )
+    return <></>
 }
 
 export default Home

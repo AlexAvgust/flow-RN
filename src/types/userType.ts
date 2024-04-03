@@ -1,11 +1,11 @@
 export type User = {
-    name: NameObj;
-    email: string;
-    profilePicture: string;
-    tasks: string[];
+    name: NameObj
+    email: string
+    profilePicture: string
+    tasks: string[]
 }
 
 type NameObj = {
-    familyName: string,
+    familyName: string
     givenName: string
 }

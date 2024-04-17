@@ -10,6 +10,8 @@ export default function _layout() {
             }}
         >
             <Stack.Screen name="index" />
+            <Stack.Screen
+                name="DetailedInfo" />
         </Stack>
     )
 }

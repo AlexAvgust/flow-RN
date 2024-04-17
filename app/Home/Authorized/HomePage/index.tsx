@@ -1,57 +1,32 @@
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet } from 'react-native'
-import React from 'react'
-import { View, Text, SkeletonView, ListItem, Button } from 'react-native-ui-lib'
 import { Link, useRouter } from 'expo-router'
-import MidButton from '../../../../src/components/Buttons/MidButton'
-import { ExpandableCalendar } from 'react-native-calendars'
 import moment from 'moment'
-import ScreenSafeContainer from '../../../../src/components/ScreenSafeContainer/ScreenSafeContainer'
+import React from 'react'
+import { ScrollView, StyleSheet } from 'react-native'
+import { Button, Text, View } from 'react-native-ui-lib'
+import HomeScreenCalendar from '../../../../src/components/HomeScreenComponents/HomeScreenCalendar/HomeScreenCalendar'
+import ScreenSafeContainer from '../../../../src/components/SharedComponents/ScreenSafeContainer/ScreenSafeContainer'
+
+
 const Homepage = () => {
     const router = useRouter()
     const currentDate = moment().format('D MMMM YYYY')
     const onAddNewTaskPress = () => {
         router.push('/Home/Authorized/HomePage/NewTask')
     }
+
     return (
         <ScreenSafeContainer>
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.container}>
                 <View marginB-40 gap-40 left>
                     <Text marginL-20 style={styles.today}>
                         Today, <Text style={styles.date}>{currentDate}</Text>
                     </Text>
-                    <ExpandableCalendar
-                        style={{ backgroundColor: 'none' }}
-                        hideKnob={true}
-                    />
+                    <View >
+                        <HomeScreenCalendar />
+                    </View>
                 </View>
 
-                <View marginB-300>
-                    <ListItem
-                        style={{
-                            flexDirection: 'column',
-                            gap: 30,
-                        }}
-                    >
-                        <Text grey10 text60 marginL-10>
-                            The item
-                        </Text>
-                        <Text grey10 text60 marginL-10>
-                            The item
-                        </Text>
-                        <Text grey10 text60 marginL-10>
-                            The item
-                        </Text>
-                        <Text grey10 text60 marginL-10>
-                            The item
-                        </Text>
-                        <Text grey10 text60 marginL-10>
-                            The item
-                        </Text>
-                        <Text grey10 text60 marginL-10>
-                            The item
-                        </Text>
-                    </ListItem>
-                </View>
+
                 <Link
                     style={{ justifyContent: 'center' }}
                     href={'/Home/Authorized/HomePage/NewTask'}
@@ -73,7 +48,7 @@ const Homepage = () => {
                         }}
                     />
                 </Link>
-            </View>
+            </ScrollView>
         </ScreenSafeContainer>
     )
 }
@@ -83,9 +58,10 @@ export default Homepage
 const styles = StyleSheet.create({
     container: {
         paddingTop: 10,
-        // flex: 1,
+        paddingBottom: 30,
         flexDirection: 'column',
         alignItems: 'center',
+        width: '100%',
     },
     hiText: {
         paddingLeft: 20,
@@ -107,4 +83,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontWeight: '200',
     },
+    calendarWithAgendaContainer: {
+        height: 250
+    }
 })

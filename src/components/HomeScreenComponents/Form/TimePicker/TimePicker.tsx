@@ -23,7 +23,6 @@ const TimePicker: React.FC<TimePickerProps> = ({ fieldName }) => {
   }, [fieldName]);
 
   const handleConfirm = useCallback((time: Date) => {
-    console.warn("A date has been picked: ", time);
     ctx.setFieldValue(fieldName, time)
     hideDatePicker();
   }, [fieldName]);

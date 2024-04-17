@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import { useDispatch } from 'react-redux'
 
-import SvgLogo from '../../../src/components/SvgLogo/SvgLogo'
+import SvgLogo from '../../../src/components/SharedComponents/SvgLogo/SvgLogo'
 import { addUser } from '../../../src/store/slices/userSlice'
 
 

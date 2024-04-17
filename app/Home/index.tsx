@@ -5,10 +5,10 @@ import { RootState } from '../../src/store/store'
 import { useNavigation } from 'expo-router'
 
 const Home = () => {
-    const user = useSelector((state: RootState) => state.user)
+    const user = useSelector((state: RootState) => state.user.user)
     const navigation = useNavigation()
     useEffect(() => {
-        if (!!user) {
+        if (Boolean(user)) {
             //@ts-ignore
             navigation.navigate('Home', { screen: 'Authorized' })
         } else {

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
-import { Form } from '../../../../../src/components/Form/Form'
+import { Form } from '../../../../../src/components/HomeScreenComponents/Form/Form'
 
 const NewTask = () => {
     return (

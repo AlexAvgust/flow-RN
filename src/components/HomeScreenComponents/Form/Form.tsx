@@ -7,14 +7,15 @@ import { StyleSheet } from 'react-native'
 import Toast from 'react-native-toast-message'
 import { Button, Checkbox, Picker, TextField, View } from 'react-native-ui-lib'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../store/store'
+import { RootState } from '../../../store/store'
 import DataPicker from './DataPicker'
 import TimePicker from './TimePicker/TimePicker'
 
 
 export const Form = memo(() => {
     const router = useRouter()
-    const user = useSelector((state: RootState) => state.user)
+    const user = useSelector((state: RootState) => state.user.user)
+    const currentlySelectedDate = useSelector((state: RootState) => state.task.currentlySelectedDate)
     const priorities = [
         { label: 'Low', value: 0 },
         { label: 'Medium', value: 1 },
@@ -26,7 +27,7 @@ export const Form = memo(() => {
     const initialValues = {
         task_name: '',
         description: '',
-        date: new Date(),
+        date: currentlySelectedDate,
         start_time: '',
         end_time: '',
         priority: 0,
@@ -34,19 +35,26 @@ export const Form = memo(() => {
     }
 
     const onSubmitForm = (values: typeof initialValues) => {
-        Toast.show({
-            type: 'success',
-            text1: 'New task successfully created 👏🙌',
-        });
+        const startTime = moment(values.start_time).valueOf()
+        const endTime = moment(values.end_time).valueOf()
+        const taskDuration = endTime - startTime
+        if (taskDuration < 0) {
+            Toast.show({
+                type: 'info',
+                text1: `Duration can't be negative number`,
+            });
+            return
+        }
+        const taskStartDate = new Date(values.date)
+        console.log(`${process.env.EXPO_PUBLIC_BACKEND_URL}/task`)
         axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/task`, {
             name: values.task_name,
-            task_start_date: values.date,
-            taskStartInMilliseconds: moment(values.start_time).valueOf(),
-            taskEndInMilliseconds: moment(values.end_time).valueOf(),
+            taskStartDate,
+            taskDuration,
             description: values.description,
             priority: values.priority,
-            repeating: values.repeating,
-            user
+            isRepeating: values.repeating,
+            user: user
 
         }).then(res => {
             Toast.show({
@@ -74,7 +82,7 @@ export const Form = memo(() => {
                 handleSubmit,
                 values }) => (
                 <View gap-30 flex centerH>
-                    <DataPicker fieldName='name' />
+                    <DataPicker fieldName='date' />
                     <TextField
                         fieldStyle={styles.taskNameFieldStyle}
                         label="Enter your task name"

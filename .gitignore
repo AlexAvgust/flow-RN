@@ -41,3 +41,4 @@ yarn-error.*
 build-*.apk
 *.apk
 /*.apk
+/.vscode

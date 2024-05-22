@@ -8,7 +8,6 @@ export default function _layout() {
             <Stack.Screen
                 name="index"
                 options={{
-                    presentation: 'modal',
                     title: 'New Task',
                 }}
             />

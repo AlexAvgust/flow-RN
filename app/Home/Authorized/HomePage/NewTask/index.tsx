@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
+import { View } from 'react-native'
 import { Form } from '../../../../../src/components/HomeScreenComponents/Form/Form'
 
 const NewTask = () => {
@@ -12,4 +12,3 @@ const NewTask = () => {
 
 export default NewTask
 
-const styles = StyleSheet.create({})

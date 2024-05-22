@@ -10,10 +10,7 @@ export default function _layout() {
         >
             <Stack.Screen name="index" />
             <Stack.Screen
-                name="NewTask"
-                options={{
-                    presentation: 'modal',
-                }}
+                name="newTask"
             />
         </Stack>
     )

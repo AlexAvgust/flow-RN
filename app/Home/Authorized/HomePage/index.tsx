@@ -1,35 +1,40 @@
-import { Link, useRouter } from 'expo-router'
+import { Link, usePathname } from 'expo-router'
 import moment from 'moment'
-import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import React, { useRef } from 'react'
+import { StyleSheet } from 'react-native'
 import { Button, Text, View } from 'react-native-ui-lib'
-import HomeScreenCalendar from '../../../../src/components/HomeScreenComponents/HomeScreenCalendar/HomeScreenCalendar'
+import CalendarWithAgenda from '../../../../src/components/HomeScreenComponents/CalendarWithAgenda/CalendarWithAgenda'
 import ScreenSafeContainer from '../../../../src/components/SharedComponents/ScreenSafeContainer/ScreenSafeContainer'
+import { useDispatch } from 'react-redux'
+import { setCurrentlySelectedDate } from '../../../../src/store/slices/taskSlice'
 
 
 const Homepage = () => {
-    const router = useRouter()
+    const path = usePathname()
+    console.log('path',path)
     const currentDate = moment().format('D MMMM YYYY')
+    const dateRef = useRef(moment().format('YYYY-MM-DD'))
+    const dispatch = useDispatch();
     const onAddNewTaskPress = () => {
-        router.push('/Home/Authorized/HomePage/NewTask')
+        dispatch(setCurrentlySelectedDate(dateRef.current))
     }
-
     return (
         <ScreenSafeContainer>
-            <ScrollView contentContainerStyle={styles.container}>
-                <View marginB-40 gap-40 left>
+            <View style={styles.container}>
+                <View style={{height:780}} marginB-40 gap-40 left>
                     <Text marginL-20 style={styles.today}>
                         Today, <Text style={styles.date}>{currentDate}</Text>
                     </Text>
-                    <View >
-                        <HomeScreenCalendar />
-                    </View>
+
+                    <CalendarWithAgenda dateRef={dateRef} />
+                   
                 </View>
 
 
                 <Link
                     style={{ justifyContent: 'center' }}
-                    href={'/Home/Authorized/HomePage/NewTask'}
+                    href={'/Home/Authorized/HomePage/newTask'}
+                    asChild
                 >
                     <Button
                         onPress={onAddNewTaskPress}
@@ -48,7 +53,7 @@ const Homepage = () => {
                         }}
                     />
                 </Link>
-            </ScrollView>
+            </View>
         </ScreenSafeContainer>
     )
 }

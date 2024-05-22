@@ -3,9 +3,14 @@
         "preview3": {
             "developmentClient": true,
             "env": {
-                "BACKEND_URL": "http://10.0.2.2:3000"
+                "EXPO_PUBLIC_BACKEND_URL": "https://f26f-193-193-212-208.ngrok-free.app"
             }
         },
-        "production": {}
+        "production": {
+            "env": {
+                "EXPO_PUBLIC_BACKEND_URL": "https://flowapp-05aa3cd0ca87.herokuapp.com"
+            },
+            "developmentClient": false
+        }
     }
 }

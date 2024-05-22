@@ -23,6 +23,7 @@ export default function Unauthorized() {
             )
             dispatch(addUser(JSON.parse(decodedUserData).user))
         })
+        console.log(`${process.env.EXPO_PUBLIC_BACKEND_URL} - backend link`)
         const redirectUrl = await WebBrowser.openAuthSessionAsync(
             `${process.env.EXPO_PUBLIC_BACKEND_URL}/auth`
         )

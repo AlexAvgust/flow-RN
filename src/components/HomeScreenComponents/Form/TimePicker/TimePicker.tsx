@@ -1,15 +1,14 @@
 import React, { memo, useCallback, useState } from 'react'
 import { Button, View } from 'react-native-ui-lib'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useFormik, useFormikContext } from 'formik';
 
 interface TimePickerProps {
+  onChange: (value: Date) => void;
   fieldName: string;
 }
 
-const TimePicker: React.FC<TimePickerProps> = ({ fieldName }) => {
+const TimePicker: React.FC<TimePickerProps> = ({ fieldName, onChange }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const ctx = useFormikContext()
   const label = fieldName
     .split('_')
     .map(el => el.charAt(0).toUpperCase() + el.slice(1))
@@ -23,7 +22,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ fieldName }) => {
   }, [fieldName]);
 
   const handleConfirm = useCallback((time: Date) => {
-    ctx.setFieldValue(fieldName, time)
+    onChange(time)
     hideDatePicker();
   }, [fieldName]);
 

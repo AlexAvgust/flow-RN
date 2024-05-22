@@ -10,21 +10,26 @@ import {
     persistReducer,
     persistStore,
 } from 'redux-persist'
-import TaskReducer from './slices/taskSlice'
-import userReducer from './slices/userSlice'
-
+import { taskSlice } from './slices/taskSlice'
+import { userSlice } from './slices/userSlice'
+import { api } from '../api/api'
+import { scheduleSlice } from './slices/scheduleSlice'
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
 }
 
 const reducers = {
-  user: userReducer,
-  task: TaskReducer 
-};
+    api: api.reducer,
+    [userSlice.name]: userSlice.reducer,
+    [taskSlice.name]: taskSlice.reducer,
+    [scheduleSlice.name]: scheduleSlice.reducer,
+}
 
-
-const persistedReducer = persistReducer(persistConfig, combineReducers(reducers))
+const persistedReducer = persistReducer(
+    persistConfig,
+    combineReducers(reducers)
+)
 
 export const store = configureStore({
     reducer: persistedReducer,
@@ -40,7 +45,7 @@ export const store = configureStore({
                     REGISTER,
                 ],
             },
-        }),
+        }).concat(api.middleware),
 })
 export const persistor = persistStore(store)
 

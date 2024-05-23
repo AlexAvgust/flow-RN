@@ -2,6 +2,7 @@ import { addTaskNames, setTasks } from '../../store/slices/taskSlice'
 import { Task } from '../../types/TaskType'
 import { User } from '../../types/userType'
 import { api } from '../api'
+import { handleQueryResult } from '../schedule/utils/handleQueryResult'
 
 type AddTask = Omit<Task, '_id'>
 
@@ -13,11 +14,9 @@ const taskApi = api.injectEndpoints({
                 method: 'GET',
             }),
             onQueryStarted: async (arg, api) => {
-                const { dispatch, queryFulfilled } = api
-
-                const { data } = await queryFulfilled
-                dispatch(addTaskNames(data))
+                await handleQueryResult(api,addTaskNames)
             },
+            keepUnusedDataFor:120
         }),
         addTask: builder.mutation<Task, AddTask>({
             query: (task: Task) => ({

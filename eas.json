@@ -3,7 +3,7 @@
         "preview3": {
             "developmentClient": true,
             "env": {
-                "EXPO_PUBLIC_BACKEND_URL": "https://f26f-193-193-212-208.ngrok-free.app"
+                "EXPO_PUBLIC_BACKEND_URL": "https://ee42-193-193-212-208.ngrok-free.app"
             }
         },
         "production": {

@@ -14,7 +14,7 @@ const ExpandedCalendarComponent: React.FC<ExpandedCalendarComponentProps> = ({ o
     <View>
       <ExpandableCalendar
         closeOnDayPress={false}
-        markedDates={{ [dateRef.current]: { selected: true,selectedColor: 'gray' } }}
+        markedDates={{ [dateRef.current]: { selected: true } }}
         onDayPress={onDatePressed}
       />
       {children}

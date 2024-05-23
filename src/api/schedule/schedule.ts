@@ -1,7 +1,7 @@
 import { setSchedules } from '../../store/slices/scheduleSlice'
-import { setTasks } from '../../store/slices/taskSlice'
 import { Schedule } from '../../types/Schedule'
 import { api } from '../api'
+import { handleQueryResult } from './utils/handleQueryResult'
 import { GetScheduleByDateRequest } from './schedule.interfaces'
 
 const scheduleApi = api.injectEndpoints({
@@ -12,23 +12,16 @@ const scheduleApi = api.injectEndpoints({
                 method: 'GET',
                 params: {
                     startDate: req.startDate,
+                    endDate: req.endDate,
                     userId: req.userId,
                 },
             }),
             onQueryStarted: async (arg, api) => {
-                const { dispatch, queryFulfilled } = api
-                const { data } = await queryFulfilled
-                console.log('query started')
-
-                if (data) {
-                    dispatch(setSchedules(data))
-                } else {
-                    dispatch(setSchedules([]))
-                }
+               await handleQueryResult(api,setSchedules)
             },
-            keepUnusedDataFor: 0,
+            keepUnusedDataFor: 120,
             transformErrorResponse(baseQueryReturnValue, meta, arg) {
-                console.error(baseQueryReturnValue.data)
+                console.error(baseQueryReturnValue.status)
             },
         }),
     }),

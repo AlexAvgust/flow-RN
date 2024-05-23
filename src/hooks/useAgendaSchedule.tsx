@@ -14,8 +14,8 @@ interface DateFormatForReq {
 
 const useAgendaSchedule = () => {
     const schedules = useSelector((state: RootState) => state.schedule.schedule)
-
     const userId = useSelector((state: RootState) => state.user.user?._id) as string;
+    
     const dateRef: MutableRefObject<DateFormatForReq> = useRef(startAndEndOfTheMonth(moment().format('YYYY-MM-DD')))
     const itemsRef: MutableRefObject<AgendaSchedule | undefined> = useRef(undefined)
 
@@ -31,7 +31,7 @@ const useAgendaSchedule = () => {
 
     const loadItemsForMonth = useCallback(async (date: DateData) => {
         dateRef.current = startAndEndOfTheMonth(date.dateString)
-        console.log('date in loadItemsForMonth func', date)
+        console.log('starting loadItemsForMonth func, date: ', date)
         refetch()
     }, [])
 

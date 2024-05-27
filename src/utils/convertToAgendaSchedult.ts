@@ -1,21 +1,39 @@
+import moment from "moment"
 import { Schedule } from "../types/Schedule"
 import { Task } from "../types/TaskType"
 
-export const convertToAgendaSchedule = (schedules: Schedule[]) => { 
-    const schedulesByDates: [string, Task[]][] = schedules.map((schedule) => [
-        schedule.date,
-        schedule.tasks,
-    ])
+interface DateFormat {
+    startOfTheMonth: string
+    endOfTheMonth: string
+}
 
-    const withHeight = schedulesByDates.map(
-        ([date, tasks]) => [
-            date,
-            tasks.map((task: Task) => ({
-                ...task,
-                height: task.taskDuration / 10000,
-            })),
-        ]
-    )
+export const convertToAgendaSchedule = (
+    schedules: Schedule[],
+    date: DateFormat
+) => {
+    const schedulesByDates: [string, Task[]][] = []
+
+    const startOfMonth = moment(date.startOfTheMonth)
+    const endOfMonth = moment(date.endOfTheMonth)
+    const daysInMonth = endOfMonth.diff(startOfMonth, 'days') + 1
+    
+    for (let i = 0; i < daysInMonth; i++) {
+        const dayInMonth = startOfMonth.clone().add(i, 'days').format('YYYY-MM-DD')
+        const schedule = schedules.find(schedule => schedule.date === dayInMonth)
+        
+        if (schedule) {
+            schedulesByDates.push([dayInMonth, schedule.tasks])
+        } else {
+            schedulesByDates.push([dayInMonth, []])
+        }
+    }
+    const withHeight = schedulesByDates.map(([date, tasks]) => [
+        date,
+        tasks.map((task: Task) => ({
+            ...task,
+            height: task.taskDuration / 100000 ,
+        }))
+    ])
 
     return Object.fromEntries(withHeight)
 }

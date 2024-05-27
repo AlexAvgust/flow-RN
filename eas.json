@@ -3,14 +3,18 @@
         "preview3": {
             "developmentClient": true,
             "env": {
-                "EXPO_PUBLIC_BACKEND_URL": "https://ee42-193-193-212-208.ngrok-free.app"
+                "EXPO_PUBLIC_BACKEND_URL": "https://9082-193-193-212-208.ngrok-free.app"
             }
         },
         "production": {
             "env": {
                 "EXPO_PUBLIC_BACKEND_URL": "https://flowapp-05aa3cd0ca87.herokuapp.com"
             },
-            "developmentClient": false
+            "developmentClient": false,
+            "autoIncrement": true,
+            "android": {
+                "buildType": "apk"
+            }
         }
     }
 }

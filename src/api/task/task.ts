@@ -2,9 +2,10 @@ import { addTaskNames, setTasks } from '../../store/slices/taskSlice'
 import { Task } from '../../types/TaskType'
 import { User } from '../../types/userType'
 import { api } from '../api'
-import { handleQueryResult } from '../schedule/utils/handleQueryResult'
+import { handleQueryResult } from '../utils/handleQueryResult'
+import { AddTask } from './task.interface'
 
-type AddTask = Omit<Task, '_id'>
+
 
 const taskApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -30,6 +31,18 @@ const taskApi = api.injectEndpoints({
                 dispatch(setTasks([data]))
             },
         }),
+        editTask: builder.mutation<Task, Task>({
+            query: (task: Task) => ({
+                url: `/task/${task._id}`,
+                method: 'PUT',
+                body: task,
+            }),
+            onQueryStarted: async (arg, api) => {
+                const { dispatch, queryFulfilled } = api
+                const { data } = await queryFulfilled
+                dispatch(setTasks([data]))
+            },
+        })
     }),
 })
 

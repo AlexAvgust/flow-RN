@@ -33,7 +33,7 @@ const Homepage = () => {
 
                 <Link
                     style={{ justifyContent: 'center' }}
-                    href={'/Home/Authorized/HomePage/newTask'}
+                    href={'/Home/(tabs)/HomePage/newTask'}
                     asChild
                 >
                     <Button

@@ -3,6 +3,7 @@ export type User = {
     name: NameObj
     email: string
     profilePicture: string
+    token: string
 }
 
 type NameObj = {

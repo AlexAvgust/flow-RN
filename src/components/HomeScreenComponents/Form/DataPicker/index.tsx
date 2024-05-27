@@ -1,28 +1,31 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { DateData } from 'react-native-calendars';
 import { View } from 'react-native-ui-lib';
-import ExpandedCalendarComponent from '../../../SharedComponents/ExpandedCalendarComponent/ExpandableCalendar';
+import ExpandedCalendarComponent from '../../ExpandedCalendarComponent/ExpandableCalendar';
 
 interface DataPickerProps {
   onChange: (value: string) => void;
-  dateRef: React.MutableRefObject<string>;
+  dateString: string;
 }
 
-const DataPicker: React.FC<DataPickerProps> = ({ onChange, dateRef }) => {
-  const onCalendarPress = (dateObj: DateData) => {
+const DataPicker: React.FC<DataPickerProps> = ({ onChange, dateString }) => {
+  const [date, setDate] = useState(dateString)
+  const onDatePressed = (dateObj: DateData) => {
+    setDate(dateObj.dateString)
+    console.log('dateObj', dateObj)
     onChange(dateObj.dateString);
   };
 
   return (
     <View>
       <ExpandedCalendarComponent
-        dateRef={dateRef}
+        dateString={date}
         children={null}
-        onDatePressed={onCalendarPress}
+        onDatePressed={onDatePressed}
       />
     </View>
   )
 };
 
-export default memo(DataPicker);
+export default DataPicker;
 

@@ -3,10 +3,12 @@ import { User } from '../../types/userType'
 
 type UserState = {
     user: User | null
+    token: string | null
 }
 
 const initialState: UserState = {
     user: null,
+    token: null
 }
 
 export const userSlice = createSlice({
@@ -18,9 +20,13 @@ export const userSlice = createSlice({
         },
         removeUser: (state) => {
             state.user = null
+            state.token = null
         },
+        addToken: (state,action:PayloadAction<string>) => { 
+            state.token = action.payload
+        }
     },
 })
 
-export const { addUser, removeUser } = userSlice.actions
+export const { addUser, removeUser, addToken } = userSlice.actions
 

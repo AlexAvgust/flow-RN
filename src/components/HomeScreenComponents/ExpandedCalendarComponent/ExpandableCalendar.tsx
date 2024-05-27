@@ -5,16 +5,17 @@ import { View } from 'react-native-ui-lib';
 interface ExpandedCalendarComponentProps {
   onDatePressed: (date: DateData) => void;
   children: React.ReactNode;
-  dateRef: React.MutableRefObject<string>;
+  dateString: string;
 
 }
 
-const ExpandedCalendarComponent: React.FC<ExpandedCalendarComponentProps> = ({ onDatePressed, children, dateRef }) => {
+const ExpandedCalendarComponent: React.FC<ExpandedCalendarComponentProps> = ({ onDatePressed, children, dateString }) => {
   return (
     <View>
       <ExpandableCalendar
+        firstDay={1}
         closeOnDayPress={false}
-        markedDates={{ [dateRef.current]: { selected: true } }}
+        markedDates={{ [dateString]: { selected: true } }}
         onDayPress={onDatePressed}
       />
       {children}

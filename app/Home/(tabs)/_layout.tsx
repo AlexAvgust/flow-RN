@@ -1,14 +1,16 @@
-import { AntDesign, Ionicons, MaterialIcons, Octicons } from '@expo/vector-icons'
+import { AntDesign, MaterialIcons, Octicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
 import moment from 'moment'
 import React, { useEffect } from 'react'
-import { CalendarProvider } from 'react-native-calendars'
-import { useDispatch, useSelector } from 'react-redux'
-import { useGetTasksNamesByUserQuery } from '../../../src/api/task/task'
-import { setTasks } from '../../../src/store/slices/taskSlice'
+import { useSelector } from 'react-redux'
 import { RootState } from '../../../src/store/store'
+import { useDispatch } from 'react-redux'
+import { useGetTasksNamesByUserQuery } from '../../../src/api/task/task'
 import { User } from '../../../src/types/userType'
 import { filterScheduleByDate } from '../../../src/utils/filterScheduleByDate'
+import { setTasks } from '../../../src/store/slices/taskSlice'
+import { CalendarProvider } from 'react-native-calendars'
+
 
 export default function _layout() {
     const user = useSelector((state: RootState) => state.user.user)
@@ -56,7 +58,7 @@ export default function _layout() {
                         ),
                     }}
                 />
-                {/* <Tabs.Screen
+                 <Tabs.Screen
                     name="Profile"
                     options={{
                         tabBarIcon: () => (
@@ -64,7 +66,7 @@ export default function _layout() {
                         ),
                     }}
                 />
-                <Tabs.Screen
+                {/* <Tabs.Screen
                     name="Settings"
                     options={{
                         tabBarIcon: () => (

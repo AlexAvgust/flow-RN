@@ -4,7 +4,7 @@
     "slug": "flow-RN",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/splash.png",
     "userInterfaceStyle": "dark",
     "scheme": "flowapp",
     "splash": {
@@ -21,7 +21,7 @@
     },
     "android": {
       "package": "com.yourcompany.flow",
-      "versionCode": 1,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

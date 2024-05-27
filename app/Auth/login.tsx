@@ -1,46 +1,28 @@
-import * as Linking from 'expo-linking'
-import * as WebBrowser from 'expo-web-browser'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import {
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from 'react-native'
-import { useDispatch } from 'react-redux'
+import { RootState, store } from '../../src/store/store';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SvgLogo from '../../src/components/SharedComponents/SvgLogo/SvgLogo';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import SvgLogo from '../../../src/components/SharedComponents/SvgLogo/SvgLogo'
-import { addUser } from '../../../src/store/slices/userSlice'
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { addToken, addUser } from '../../src/store/slices/userSlice';
+import { router, usePathname } from 'expo-router';
+import { useAuth } from '../../src/hooks/useAuthHooks';
 
 
-export default function Unauthorized() {
-    const dispatch = useDispatch()
-    const onGoogleLoginPress = async () => {
-        Linking.addEventListener('url', (event) => {
-            const decodedUserData = decodeURIComponent(
-                event.url.split('user=')[1]
-            )
-            dispatch(addUser(JSON.parse(decodedUserData).user))
-        })
-        console.log(`${process.env.EXPO_PUBLIC_BACKEND_URL} - backend link`)
-        const redirectUrl = await WebBrowser.openAuthSessionAsync(
-            `${process.env.EXPO_PUBLIC_BACKEND_URL}/auth`
-        )
-        if (redirectUrl.type === 'success') {
-            const decodedUserData = decodeURIComponent(
-                redirectUrl.url.split('user=')[1]
-            )
-            dispatch(addUser(JSON.parse(decodedUserData).user))
-        }
-    }
 
+const Login = () => {
+    const path = usePathname()
+    console.log('path', path)
+    const { login } = useAuth()
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.buttonContainer}>
                 <Text style={styles.text}>WELCOME TO</Text>
                 <SvgLogo color="#fff" />
-                <TouchableOpacity onPress={onGoogleLoginPress}>
+                <TouchableOpacity onPress={login}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>
                             {/* <Icon name="logo-google" size={30} color="#fff" /> */}
@@ -53,7 +35,10 @@ export default function Unauthorized() {
             </View>
         </SafeAreaView>
     )
+
 }
+
+export default Login
 
 const styles = StyleSheet.create({
     container: {

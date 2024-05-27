@@ -375,6 +375,19 @@ index 0e5be76..0b0b56e 100644
      }
      return (<Calendar hideArrows={true} hideExtraDays={true} {...calendarProps} current={dateString} style={calendarStyle} headerStyle={horizontal ? headerStyle : undefined} disableMonthChange onPressArrowLeft={horizontal ? _onPressArrowLeft : onPressArrowLeft} onPressArrowRight={horizontal ? _onPressArrowRight : onPressArrowRight}/>);
  });
+diff --git a/node_modules/react-native-calendars/src/calendar/index.js b/node_modules/react-native-calendars/src/calendar/index.js
+index 6f46e8a..d277676 100644
+--- a/node_modules/react-native-calendars/src/calendar/index.js
++++ b/node_modules/react-native-calendars/src/calendar/index.js
+@@ -104,7 +104,7 @@ const Calendar = (props) => {
+         const dateString = toMarkingFormat(day);
+         const isControlled = isEmpty(props.context);
+         return (<View style={style.current.dayContainer} key={id}>
+-        <Day {...dayProps} testID={`${testID}.day_${dateString}`} date={dateString} state={getState(day, currentMonth, props, isControlled)} marking={markedDates?.[dateString]} onPress={_onDayPress} onLongPress={onLongPressDay}/>
++        <Day {...dayProps} testID={`${testID}.day_${dateString}`} date={dateString} marking={markedDates?.[dateString]} onPress={_onDayPress} onLongPress={onLongPressDay}/>
+       </View>);
+     };
+     const renderWeek = (days, id) => {
 diff --git a/node_modules/react-native-calendars/src/day-state-manager.d.ts b/node_modules/react-native-calendars/src/day-state-manager.d.ts
 index 7313332..55f3973 100644
 --- a/node_modules/react-native-calendars/src/day-state-manager.d.ts
@@ -384,10 +397,10 @@ index 7313332..55f3973 100644
 -export declare function getState(day: XDate, current: XDate, props: any, disableDaySelection?: boolean): string;
 +export declare function getState(day: XDate, current: XDate, props: any, disableDaySelection?: boolean,selectedDay): string;
 diff --git a/node_modules/react-native-calendars/src/day-state-manager.js b/node_modules/react-native-calendars/src/day-state-manager.js
-index 514e854..a391d6d 100644
+index 514e854..8509edc 100644
 --- a/node_modules/react-native-calendars/src/day-state-manager.js
 +++ b/node_modules/react-native-calendars/src/day-state-manager.js
-@@ -1,11 +1,27 @@
+@@ -1,11 +1,25 @@
  const { isToday, isDateNotInRange, sameMonth } = require('./dateutils');
  const { toMarkingFormat } = require('./interface');
 +function convertDateString(dateString) {
@@ -408,10 +421,8 @@ index 514e854..a391d6d 100644
 +    if (!disableDaySelection && ((context?.date ?? toMarkingFormat(current)) === toMarkingFormat(day)) &&
 +        convertDateString(day) === selectedDay && day.getDay() === 0) {
          state = 'selected';
-+            console.log('first')
      }
 +    else if (!disableDaySelection && ((context?.date ?? selectedDay) === toMarkingFormat(day)) && day.getDay() !== 0) {
-+        console.log('second block')
 +        state = 'selected';
 +        }
      else if (isToday(day)) {
@@ -452,18 +463,6 @@ index c030f84..cbef3ee 100644
      }, [firstDay, _onDayPress, context, date, markedDates]);
      const keyExtractor = useCallback((item) => item, []);
      const renderWeekDaysNames = useMemo(() => {
-diff --git a/node_modules/react-native-calendars/src/expandableCalendar/WeekCalendar/new.d.ts b/node_modules/react-native-calendars/src/expandableCalendar/WeekCalendar/new.d.ts
-index 9598926..b53284e 100644
---- a/node_modules/react-native-calendars/src/expandableCalendar/WeekCalendar/new.d.ts
-+++ b/node_modules/react-native-calendars/src/expandableCalendar/WeekCalendar/new.d.ts
-@@ -3,6 +3,7 @@ import { CalendarListProps } from '../../calendar-list';
- export interface WeekCalendarProps extends CalendarListProps {
-     /** whether to have shadow/elevation for the calendar */
-     allowShadow?: boolean;
-+    disableOnPageChange?: boolean
- }
- declare const WeekCalendar: (props: WeekCalendarProps) => React.JSX.Element;
- export default WeekCalendar;
 diff --git a/node_modules/react-native-calendars/src/expandableCalendar/WeekCalendar/new.js b/node_modules/react-native-calendars/src/expandableCalendar/WeekCalendar/new.js
 index b7e3a65..1ef1dd2 100644
 --- a/node_modules/react-native-calendars/src/expandableCalendar/WeekCalendar/new.js

@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Text, View } from 'react-native-ui-lib';
 import { useSelector } from 'react-redux';
+import { useGetScheduleByDateQuery } from '../../../api/schedule/schedule';
 import { useAddTaskMutation } from '../../../api/task/task';
 import { RootState } from '../../../store/store';
 import ButtonWithStates from '../../SharedComponents/ButtonWithStates/ButtonWithStates';
@@ -29,8 +30,6 @@ export const Form = () => {
     const user = useSelector((state: RootState) => state.user.user);
     const currentlySelectedDate = useSelector((state: RootState) => state.task.currentlySelectedDate);
 
-    const [addTask, { isError, isLoading, isSuccess }] = useAddTaskMutation();
-
     const dateRef = useRef(currentlySelectedDate)
     const taskNameRef = useRef('');
     const descriptionRef = useRef('');
@@ -38,6 +37,12 @@ export const Form = () => {
     const endTimeRef = useRef('');
     const priorityRef = useRef(0)
     const repeatingRef = useRef(false)
+
+    const [addTask, { isError, isLoading, isSuccess }] = useAddTaskMutation();
+
+    //TODO implement invalidate func 
+    const { refetch: refetchSchedule  } = useGetScheduleByDateQuery({ startDate: dateRef.current, userId: user?._id as string })
+
 
     const onSubmitForm = async () => {
         try {
@@ -73,11 +78,14 @@ export const Form = () => {
                 user: user,
             };
             await addTask(taskObj).unwrap();
+            
             Toast.show({
                 type: 'success',
                 text1: 'New task successfully created 👏🙌',
             });
-            router.push('/Home/Authorized/HomePage');
+            router.back()
+
+            await refetchSchedule().unwrap()
         } catch (err: any) {
             // Validation failed, show validation errors
             if (err?.inner) {
@@ -95,7 +103,7 @@ export const Form = () => {
     return (
         <View gap-30 flex centerH >
             <DataPicker
-                dateRef={dateRef}
+                dateString={dateRef.current}
                 onChange={(newDate) => dateRef.current = newDate}
             />
             <Text style={styles.labelStyle}>

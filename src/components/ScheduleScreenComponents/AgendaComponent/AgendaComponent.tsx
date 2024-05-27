@@ -12,26 +12,22 @@ interface AgendaComponentProps {
 
 const AgendaComponent: React.FC<AgendaComponentProps> = ({ renderEmptyDate }) => {
     const currentlySelectedDate = useSelector((state: RootState) => state.task.currentlySelectedDate)
-    const { items, loadItemsForMonth } = useAgendaSchedule()
+    const { items, updateDateAndItems } = useAgendaSchedule()
    
         return (
             <Agenda
+                firstDay={1}
                 items={items}
                 renderItem={(item) => <AgendaListItem reservation={item} />}
                 renderEmptyDate={renderEmptyDate}
-                loadItemsForMonth={loadItemsForMonth}
+                loadItemsForMonth={updateDateAndItems}
                 showClosingKnob={true}
                 maxToRenderPerBatch={500}
                 allowSelectionOutOfRange={true}
                 selected={currentlySelectedDate}
-                pastScrollRange={12}
+                pastScrollRange={6}
                 futureScrollRange={12}
-                // onDayPress={onDayPress}
-                theme={{
-                    textDayStyle: {
-                        color: 'black'
-                    },
-                }}
+                onDayPress={updateDateAndItems}
             />
         )
 

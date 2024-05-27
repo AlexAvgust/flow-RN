@@ -8,7 +8,7 @@ import { RootState } from '../../../store/store';
 import { Task } from '../../../types/TaskType';
 import AgendaItem from '../AgendaItem/AgendaItem';
 import EmptyEventItem from '../../SharedComponents/EmptyEventItem/EmptyEventItem';
-import ExpandableCalendar from '../../SharedComponents/ExpandedCalendarComponent/ExpandableCalendar';
+import ExpandableCalendar from '../ExpandedCalendarComponent/ExpandableCalendar';
 import { filterScheduleByDate } from '../../../utils/filterScheduleByDate';
 import moment from 'moment';
 
@@ -41,7 +41,7 @@ const CalendarWithAgenda: React.FC<CalendarWithAgendaProps> = ( {dateRef}) => {
         <View style={{ backgroundColor: '#fff', flex: 1 }}>
             <ExpandableCalendar
                 onDatePressed={onDatePressed}
-                dateRef={dateRef}
+                dateString={dateRef.current}
             >
                 {showContent ? (
                     <>

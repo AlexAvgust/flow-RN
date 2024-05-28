@@ -1,16 +1,14 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { AgendaList, DateData } from 'react-native-calendars';
 import { SkeletonView, View } from 'react-native-ui-lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetScheduleByDateQuery } from '../../../api/schedule/schedule';
-import { setCurrentlySelectedDate, setTasks } from '../../../store/slices/taskSlice';
 import { RootState } from '../../../store/store';
 import { Task } from '../../../types/TaskType';
-import AgendaItem from '../AgendaItem/AgendaItem';
-import EmptyEventItem from '../../SharedComponents/EmptyEventItem/EmptyEventItem';
-import ExpandableCalendar from '../ExpandedCalendarComponent/ExpandableCalendar';
 import { filterScheduleByDate } from '../../../utils/filterScheduleByDate';
-import moment from 'moment';
+import EmptyEventItem from '../../SharedComponents/EmptyEventItem/EmptyEventItem';
+import AgendaItem from '../AgendaItem/AgendaItem';
+import ExpandableCalendar from '../ExpandedCalendarComponent/ExpandableCalendar';
 
 interface CalendarWithAgendaProps {
     dateRef: React.MutableRefObject<string>;

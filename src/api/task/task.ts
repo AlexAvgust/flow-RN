@@ -7,7 +7,7 @@ import { AddTask } from './task.interface'
 
 
 
-const taskApi = api.injectEndpoints({
+const taskApi = api.enhanceEndpoints({addTagTypes:['Tasks']}).injectEndpoints({
     endpoints: (builder) => ({
         getTasksNamesByUser: builder.query<string[], User>({
             query: (user) => ({
@@ -15,9 +15,10 @@ const taskApi = api.injectEndpoints({
                 method: 'GET',
             }),
             onQueryStarted: async (arg, api) => {
-                await handleQueryResult(api,addTaskNames)
+                console.log('query started, arg: ' + JSON.stringify(arg))
+                await handleQueryResult(api, addTaskNames)
             },
-            keepUnusedDataFor:120
+            keepUnusedDataFor: 0,
         }),
         addTask: builder.mutation<Task, AddTask>({
             query: (task: Task) => ({
@@ -30,6 +31,7 @@ const taskApi = api.injectEndpoints({
                 const { data } = await queryFulfilled
                 dispatch(setTasks([data]))
             },
+            invalidatesTags: ['Schedules'],
         }),
         editTask: builder.mutation<Task, Task>({
             query: (task: Task) => ({
@@ -42,7 +44,7 @@ const taskApi = api.injectEndpoints({
                 const { data } = await queryFulfilled
                 dispatch(setTasks([data]))
             },
-        })
+        }),
     }),
 })
 

@@ -10,6 +10,7 @@ import { User } from '../../../src/types/userType'
 import { filterScheduleByDate } from '../../../src/utils/filterScheduleByDate'
 import { setTasks } from '../../../src/store/slices/taskSlice'
 import { CalendarProvider } from 'react-native-calendars'
+import { useGetScheduleByDateQuery } from '../../../src/api/schedule/schedule'
 
 
 export default function _layout() {
@@ -18,12 +19,17 @@ export default function _layout() {
     const currentlySelectedDate = useSelector((state: RootState) => state.task.currentlySelectedDate)
 
     const dispatch = useDispatch()
-    const { refetch } = useGetTasksNamesByUserQuery(user as User)
+    const { refetch: refetchTaskNames } = useGetTasksNamesByUserQuery(user as User)
+    const { refetch: refetchScheduleOnStartUp } = useGetScheduleByDateQuery({ startDate: currentlySelectedDate, userId: user?._id });
+
     useEffect(() => {
-        const currentDate = moment().format('YYYY-MM-DD')
-        const tasksForDate = filterScheduleByDate(schedule, currentDate)
+        refetchScheduleOnStartUp()
+        refetchTaskNames()
+        
+        const tasksForDate = filterScheduleByDate(schedule, currentlySelectedDate)
+        console.log('tasksForDate length', tasksForDate.length);
+        
         dispatch(setTasks(tasksForDate))
-        refetch()
         console.log('================================')
     }, [])
     return (

@@ -41,7 +41,7 @@ export const Form = () => {
     const [addTask, { isError, isLoading, isSuccess }] = useAddTaskMutation();
 
     //TODO implement invalidate func 
-    const { refetch: refetchSchedule  } = useGetScheduleByDateQuery({ startDate: dateRef.current, userId: user?._id as string })
+    const { refetch: refetchSchedule } = useGetScheduleByDateQuery({ startDate: dateRef.current, userId: user?._id as string }, { skip: !user?._id })
 
 
     const onSubmitForm = async () => {
@@ -78,14 +78,14 @@ export const Form = () => {
                 user: user,
             };
             await addTask(taskObj).unwrap();
-            
+            router.back()
             Toast.show({
                 type: 'success',
                 text1: 'New task successfully created 👏🙌',
             });
-            router.back()
-
-            await refetchSchedule().unwrap()
+            
+            
+            await refetchSchedule()
         } catch (err: any) {
             // Validation failed, show validation errors
             if (err?.inner) {

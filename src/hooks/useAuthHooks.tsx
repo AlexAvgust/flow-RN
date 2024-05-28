@@ -3,6 +3,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthProvider";
 
 export function useProtectedRoute(token: string | null) {
+    console.log('current token: ' + token);
     useEffect(() => {
         if (!token ) {
             console.log('replace route to login')

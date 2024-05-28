@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Picker } from 'react-native-ui-lib';
 import { PickerItemProps } from 'react-native-ui-lib/src/components/picker/types';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 interface PickerComponentProps {
     items: PickerItemProps[],
@@ -18,6 +19,20 @@ const PickerComponent: React.FC<PickerComponentProps> = ({ items, label, onChang
     return (
         <Picker
             style={styles.selectStyles}
+            topBarProps={{
+                containerStyle: {
+                    paddingHorizontal: 20,
+                    paddingVertical: 10,
+                },
+                doneLabel: "Select priority",
+                title: "Priority",
+                titleStyle: {
+                    fontSize: 18,
+                },
+
+
+
+            }}
             value={values}
             onChange={handleChange}
             useWheelPicker={true} items={items}

@@ -15,7 +15,6 @@ export const scheduleSlice = createSlice({
     reducers: {
         setSchedules: (state, action: PayloadAction<Schedule[]>) => {
             console.log('updated schedule in slice', action.payload);
-        
             state.schedule = [
                 ...new Map([...state.schedule, ...action.payload].map((item) => [item['_id'], item])).values()
             ]

@@ -11,7 +11,7 @@ export function useProtectedRoute(token: string | null) {
         } else if (token ) {
             console.log('replace route to home')
 
-            router.replace("/Home/(tabs)/");
+            router.replace("/Home/(tabs)/HomePage");
         }
     }, [token]);
 }

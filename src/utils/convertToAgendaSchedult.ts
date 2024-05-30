@@ -1,6 +1,6 @@
-import moment from "moment"
-import { Schedule } from "../types/Schedule"
-import { Task } from "../types/TaskType"
+import moment from 'moment'
+import { Schedule } from '../types/Schedule'
+import { Task } from '../types/TaskType'
 
 interface DateFormat {
     startOfTheMonth: string
@@ -16,11 +16,16 @@ export const convertToAgendaSchedule = (
     const startOfMonth = moment(date.startOfTheMonth)
     const endOfMonth = moment(date.endOfTheMonth)
     const daysInMonth = endOfMonth.diff(startOfMonth, 'days') + 1
-    
+
     for (let i = 0; i < daysInMonth; i++) {
-        const dayInMonth = startOfMonth.clone().add(i, 'days').format('YYYY-MM-DD')
-        const schedule = schedules.find(schedule => schedule.date === dayInMonth)
-        
+        const dayInMonth = startOfMonth
+            .clone()
+            .add(i, 'days')
+            .format('YYYY-MM-DD')
+        const schedule = schedules.find(
+            (schedule) => schedule.date === dayInMonth
+        )
+
         if (schedule) {
             schedulesByDates.push([dayInMonth, schedule.tasks])
         } else {
@@ -29,11 +34,14 @@ export const convertToAgendaSchedule = (
     }
     const withHeight = schedulesByDates.map(([date, tasks]) => [
         date,
-        tasks.map((task: Task) => ({
-            ...task,
-            height: task.taskDuration / 100000 ,
-        }))
+        tasks.map((task: Task) => {
+            const height = task.taskDuration / 100000
+            return {
+                ...task,
+                height: height < 50 ? 50: height,
+            }
+        }),
     ])
-
+    console.log('with height: ' + JSON.stringify(withHeight))
     return Object.fromEntries(withHeight)
 }

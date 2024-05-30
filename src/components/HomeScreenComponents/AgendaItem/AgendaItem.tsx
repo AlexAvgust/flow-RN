@@ -1,22 +1,25 @@
 import moment from 'moment';
-import React, { useCallback, useMemo } from 'react';
+import React, { Dispatch, MutableRefObject, useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-ui-lib';
 import { Task } from '../../../types/TaskType';
 import { mapPriorityToColor } from '../../../utils/colorMaper';
+import { useDispatch } from 'react-redux';
+import { setSelectedTask } from '../../../store/slices/taskSlice';
 
 
 interface ItemProps {
     item: Task;
+    setShowDetails: Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AgendaItem: React.FC<ItemProps> = (props) => {
-    const { item } = props;
-
+const AgendaItem: React.FC<ItemProps> = ({ item, setShowDetails }) => {
+    const dispatch = useDispatch()
     const itemPressed = useCallback(() => {
-        //TODO: add edit task here
+        setShowDetails(state => !state)
+        dispatch(setSelectedTask(item))
     }, []);
-    const taskDuration = useMemo(() => moment(item.taskDuration).format('HH:mm'), [item.taskDuration])
+    const taskDuration = useMemo(() => moment.duration(item.taskDuration).format('h [h] m [m]'), [item.taskDuration])
 
     return (
         <TouchableOpacity onPress={itemPressed} style={[styles.item, { borderRightColor: mapPriorityToColor(item.priority) }]}>
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     itemDurationContainer: {
+        width: 50,
         alignItems: 'center',
         justifyContent: 'center'
     },

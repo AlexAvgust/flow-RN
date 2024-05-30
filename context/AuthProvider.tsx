@@ -1,7 +1,7 @@
 import * as Linking from 'expo-linking';
 import { router } from "expo-router";
 import * as WebBrowser from 'expo-web-browser';
-import React, { ReactNode, createContext } from "react";
+import React, { ReactNode, createContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useProtectedRoute } from "../src/hooks/useAuthHooks";
 import { addToken, addUser, removeUser } from "../src/store/slices/userSlice";
@@ -30,13 +30,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     const user = useSelector((state: RootState) => state.user.user)
     const token = useSelector((state: RootState) => state.user.token)
 
-    const decodeAndDispatchUserAndToken = (result: any) => {
+    const decodeAndDispatchUserAndToken = (url: string) => {
         const decodedUserData = JSON.parse(decodeURIComponent(
-            result.url.split('user=')[1]
-        ))
-        dispatch(addUser(decodedUserData.user))
-        dispatch(addToken(decodedUserData.token))
-    }
+            url.split('user=')[1]
+        ));
+        dispatch(addUser(decodedUserData.user));
+        dispatch(addToken(decodedUserData.token));
+    };
 
     const login = async () => {
         const redirectUrl = await WebBrowser.openAuthSessionAsync(
@@ -56,6 +56,28 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     const logout = () => {
         dispatch(removeUser())
     };
+
+    useEffect(() => {
+        const handleDeepLink = ({ url }: { url: string }) => {
+            if (url.includes('user=')) {
+                decodeAndDispatchUserAndToken(url);
+            }
+        };
+
+        const subscription = Linking.addEventListener('url', handleDeepLink);
+        
+        // Check if the app was opened with a URL
+        Linking.getInitialURL().then((url) => {
+            if (url && url.includes('user=')) {
+                decodeAndDispatchUserAndToken(url);
+            }
+        });
+
+        return () => {
+            subscription.remove()
+        };
+    }, []);
+
 
     useProtectedRoute(token);
 

@@ -1,58 +1,43 @@
-import { Link, usePathname } from 'expo-router'
+import { useFocusEffect, usePathname, useRouter } from 'expo-router'
 import moment from 'moment'
 import React, { useRef } from 'react'
 import { StyleSheet } from 'react-native'
-import { Button, Text, View } from 'react-native-ui-lib'
-import CalendarWithAgenda from '../../../../src/components/HomeScreenComponents/CalendarWithAgenda/CalendarWithAgenda'
-import ScreenSafeContainer from '../../../../src/components/SharedComponents/ScreenSafeContainer/ScreenSafeContainer'
+import { Text, View } from 'react-native-ui-lib'
 import { useDispatch } from 'react-redux'
-import { setCurrentlySelectedDate } from '../../../../src/store/slices/taskSlice'
+import CalendarWithAgenda from '../../../../src/components/HomeScreenComponents/CalendarWithAgenda/CalendarWithAgenda'
+import ButtonWithStates from '../../../../src/components/SharedComponents/ButtonWithStates/ButtonWithStates'
+import ScreenSafeContainer from '../../../../src/components/SharedComponents/ScreenSafeContainer/ScreenSafeContainer'
+import { setCurrentlySelectedDate, setSelectedTask } from '../../../../src/store/slices/taskSlice'
+
 
 
 const Homepage = () => {
     const path = usePathname()
-    console.log('path',path)
+    console.log('path', path)
+    const router = useRouter()
     const currentDate = moment().format('D MMMM YYYY')
     const dateRef = useRef(moment().format('YYYY-MM-DD'))
     const dispatch = useDispatch();
     const onAddNewTaskPress = () => {
         dispatch(setCurrentlySelectedDate(dateRef.current))
+        router.push(`${path}/newTask`)
     }
+    useFocusEffect(() => {
+        dispatch(setSelectedTask(null))
+    })
+
     return (
         <ScreenSafeContainer>
             <View style={styles.container}>
-                <View style={{height:780}} marginB-40 gap-40 left>
+                <View style={{ height: 780 }} marginB-40 gap-40 left>
                     <Text marginL-20 style={styles.today}>
                         Today, <Text style={styles.date}>{currentDate}</Text>
                     </Text>
 
                     <CalendarWithAgenda dateRef={dateRef} />
-                   
+
                 </View>
-
-
-                <Link
-                    style={{ justifyContent: 'center' }}
-                    href={'/Home/(tabs)/HomePage/newTask'}
-                    asChild
-                >
-                    <Button
-                        onPress={onAddNewTaskPress}
-                        size={Button.sizes.medium}
-                        label="Add new task"
-                        backgroundColor="#000"
-                        color="#fff"
-                        outlineColor="#000"
-                        outlineWidth={2}
-                        activeBackgroundColor="#000"
-                        activeOpacity={0.6}
-                        style={{
-                            borderWidth: 1,
-                            paddingVertical: 12,
-                            paddingHorizontal: 24,
-                        }}
-                    />
-                </Link>
+                <ButtonWithStates label='Add new task' onPressFunc={onAddNewTaskPress} />
             </View>
         </ScreenSafeContainer>
     )

@@ -1,14 +1,10 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { RootState, store } from '../../src/store/store';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SvgLogo from '../../src/components/SharedComponents/SvgLogo/SvgLogo';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { addToken, addUser } from '../../src/store/slices/userSlice';
-import { router, usePathname } from 'expo-router';
+import { usePathname } from 'expo-router';
 import { useAuth } from '../../src/hooks/useAuthHooks';
 
 

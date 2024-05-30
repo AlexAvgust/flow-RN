@@ -7,6 +7,7 @@ import { useGetScheduleByDateQuery } from '../api/schedule/schedule';
 import { RootState } from '../store/store';
 import { convertToAgendaSchedule } from '../utils/convertToAgendaSchedult';
 import { startAndEndOfTheMonth } from '../utils/startAndEndOfTheMonth';
+import useGetSchedules from './useGetSchedules';
 
 interface DateFormatForReq {
     startOfTheMonth: string, endOfTheMonth: string
@@ -14,20 +15,17 @@ interface DateFormatForReq {
 
 const useAgendaSchedule = () => {
     const schedules = useSelector((state: RootState) => state.schedule.schedule)
-    const userId = useSelector((state: RootState) => state.user.user?._id) as string;
-
     const dateRef: MutableRefObject<DateFormatForReq> = useRef(startAndEndOfTheMonth(moment().format('YYYY-MM-DD')))
     const itemsRef: MutableRefObject<AgendaSchedule | undefined> = useRef(undefined)
-    const { refetch } = useGetScheduleByDateQuery({
+    const { refetch } = useGetSchedules({
         startDate: dateRef.current.startOfTheMonth,
         endDate: dateRef.current.endOfTheMonth,
-        userId
-    })
+    },false)
 
     const updateDateAndItems = (date: DateData) => {
         dateRef.current = startAndEndOfTheMonth(date.dateString);
         refetch()
-        itemsRef.current = {...itemsRef.current, ...convertToAgendaSchedule(schedules, dateRef.current)};
+        itemsRef.current = { ...itemsRef.current, ...convertToAgendaSchedule(schedules, dateRef.current) };
     }
 
     return {

@@ -1,3 +1,4 @@
+import Toast from 'react-native-toast-message'
 import { addTaskNames, setTasks } from '../../store/slices/taskSlice'
 import { Task } from '../../types/TaskType'
 import { User } from '../../types/userType'
@@ -7,45 +8,63 @@ import { AddTask } from './task.interface'
 
 
 
-const taskApi = api.enhanceEndpoints({addTagTypes:['Tasks']}).injectEndpoints({
-    endpoints: (builder) => ({
-        getTasksNamesByUser: builder.query<string[], User>({
-            query: (user) => ({
-                url: `/task/user/${user._id}`,
-                method: 'GET',
+const taskApi = api
+    .enhanceEndpoints({ addTagTypes: ['Tasks'] })
+    .injectEndpoints({
+        endpoints: (builder) => ({
+            getTasksNamesByUser: builder.query<string[], User>({
+                query: (user) => ({
+                    url: `/task/user/${user._id}`,
+                    method: 'GET',
+                }),
+                onQueryStarted: async (arg, api) => {
+                    console.log('query started, arg: ' + JSON.stringify(arg))
+                    await handleQueryResult(api, addTaskNames)
+                },
             }),
-            onQueryStarted: async (arg, api) => {
-                console.log('query started, arg: ' + JSON.stringify(arg))
-                await handleQueryResult(api, addTaskNames)
-            },
-            keepUnusedDataFor: 0,
-        }),
-        addTask: builder.mutation<Task, AddTask>({
-            query: (task: Task) => ({
-                url: `/task`,
-                method: 'POST',
-                body: task,
+            addTask: builder.mutation<Task, AddTask>({
+                query: (task: Task) => ({
+                    url: `/task`,
+                    method: 'POST',
+                    body: task,
+                }),
+                invalidatesTags: ['Schedules'],
+                transformErrorResponse(baseQueryReturnValue, meta, arg) {
+                    Toast.show({
+                        type: 'error',
+                        text1: `${baseQueryReturnValue.status}`
+                    })
+                }
             }),
-            onQueryStarted: async (arg, api) => {
-                const { dispatch, queryFulfilled } = api
-                const { data } = await queryFulfilled
-                dispatch(setTasks([data]))
-            },
-            invalidatesTags: ['Schedules'],
-        }),
-        editTask: builder.mutation<Task, Task>({
-            query: (task: Task) => ({
-                url: `/task/${task._id}`,
-                method: 'PUT',
-                body: task,
+            editTask: builder.mutation<Task, Task>({
+                query: (task: Task) => ({
+                    url: `/task`,
+                    method: 'PUT',
+                    body:task
+                }),
+                invalidatesTags: ['Schedules'],
+                transformErrorResponse(baseQueryReturnValue, meta, arg) {
+                    console.error(baseQueryReturnValue.data)
+                    Toast.show({
+                        type: 'error',
+                        text1: `${baseQueryReturnValue.status}`
+                    })
+                }
             }),
-            onQueryStarted: async (arg, api) => {
-                const { dispatch, queryFulfilled } = api
-                const { data } = await queryFulfilled
-                dispatch(setTasks([data]))
-            },
-        }),
-    }),
-})
+            deleteTask: builder.mutation<null, string>({
+                query: (taskId: string) => ({
+                    url: `/task/${taskId}`,
+                    method: 'DELETE',
+                }),
+                invalidatesTags: ['Schedules'],
+                transformErrorResponse(baseQueryReturnValue, meta, arg) {
+                    Toast.show({
+                        type: 'error',
+                        text1: `${baseQueryReturnValue.status}`
+                    })
+                }
+            }),
+        })
+    })
 
-export const { useAddTaskMutation, useGetTasksNamesByUserQuery } = taskApi
+export const { useAddTaskMutation, useGetTasksNamesByUserQuery, useEditTaskMutation, useDeleteTaskMutation } = taskApi

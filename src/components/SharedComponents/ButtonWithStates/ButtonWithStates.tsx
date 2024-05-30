@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet } from 'react-native'
+import { ActivityIndicator, Pressable, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
 import { Button, Text, View } from 'react-native-ui-lib'
 import { ButtonWithStatesProps } from './ButtonWithStates.types'
@@ -19,14 +19,14 @@ const ButtonWithStates: React.FC<ButtonWithStatesProps> = ({
     }
   }, [error, loading, success])
   return (
-    <Button paddingH-40 paddingV-20 animateLayout={true} backgroundColor={backgroundColor} onPress={onPressFunc} >
-      <View row={true} gap-10>
-        {loading ? <ActivityIndicator /> : null}
-        <Text white>
-          {label}
-        </Text>
-      </View>
-    </Button>
+      <Button paddingH-40 paddingV-15 animateLayout={true} backgroundColor={backgroundColor} onPress={onPressFunc} >
+        <View row={true} gap-10>
+          {loading ? <ActivityIndicator /> : null}
+          <Text white>
+            {label}
+          </Text>
+        </View>
+      </Button>
   )
 }
 

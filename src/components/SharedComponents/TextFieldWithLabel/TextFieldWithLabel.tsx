@@ -5,11 +5,12 @@ import { TextField } from 'react-native-ui-lib'
 interface TextFieldWithLabelProps {
     label: string
     onChange: (value: string) => void
+    description: string
 }
 
 
-const TextFieldWithLabel: React.FC<TextFieldWithLabelProps> = ({label,onChange}) => {
-    const [fieldValue, setFieldValue] = useState('')
+const TextFieldWithLabel: React.FC<TextFieldWithLabelProps> = ({label,onChange, description}) => {
+    const [fieldValue, setFieldValue] = useState(description)
     const handleChange = (value: string) => {
         setFieldValue(value)
         onChange(value)

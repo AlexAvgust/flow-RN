@@ -4,12 +4,7 @@ export const handleQueryResult = async <T>(
     api: any,
     action: ActionCreator<T>
 ) => {
-    const { dispatch, queryFulfilled, getCacheEntry } = api
-    const { data: cachedData } = getCacheEntry()
-    if (cachedData) {
-        console.log('handleQueryResult cachedData 1 + cachedData: ' + JSON.stringify(cachedData))
-        dispatch(action(cachedData))
-    } else {
+    const { dispatch, queryFulfilled } = api
         console.log('handleQueryResult NOT cachedData')
     const { data } = await queryFulfilled
     console.log('data:::',data)
@@ -18,6 +13,5 @@ export const handleQueryResult = async <T>(
         } else {
             dispatch(action([]))
         }
-    }
     console.log('handleQueryResult started')
 }

@@ -1,43 +1,56 @@
-import React, { memo, useCallback, useState } from 'react'
-import { Button, View } from 'react-native-ui-lib'
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import React, { memo, useCallback, useState } from 'react';
+import { Button, Text, View } from 'react-native-ui-lib';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 interface TimePickerProps {
   onChange: (value: Date) => void;
   fieldName: string;
+  startTime?: string;
+  endTime?: string;
 }
 
-const TimePicker: React.FC<TimePickerProps> = ({ fieldName, onChange }) => {
+const TimePicker: React.FC<TimePickerProps> = ({ fieldName, onChange, startTime, endTime }) => {
+  const initialDate = startTime ? moment(startTime).toDate() : endTime ? moment(endTime).toDate() : new Date();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [date, setDate] = useState<Date>(initialDate);
+
   const label = fieldName
     .split('_')
     .map(el => el.charAt(0).toUpperCase() + el.slice(1))
-    .join(' ')
+    .join(' ');
 
-  const showDatePicker = useCallback(() => {
+  const showDatePicker =() => {
     setDatePickerVisibility(true);
-  }, [fieldName]);
-  const hideDatePicker = useCallback(() => {
-    setDatePickerVisibility(false);
-  }, [fieldName]);
+  }
 
-  const handleConfirm = useCallback((time: Date) => {
-    onChange(time)
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  }
+
+  const handleConfirm = (selectedDate: Date) => {
+    setDate(selectedDate);
+    onChange(selectedDate);
     hideDatePicker();
-  }, [fieldName]);
+  }
+
+  const formattedTime = moment(date).format('HH:mm');
 
   return (
-    <View marginR>
+    <View gap-10 marginR row centerV>
+      <Text>
+        Selected: {formattedTime}
+      </Text>
       <Button backgroundColor="#000" label={label} onPress={showDatePicker} />
       <DateTimePickerModal
+        date={date}
         isVisible={isDatePickerVisible}
         mode="time"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
     </View>
-  )
-}
+  );
+};
 
-export default memo(TimePicker)
-
+export default TimePicker

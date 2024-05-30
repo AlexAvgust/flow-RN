@@ -3,11 +3,12 @@ import { Checkbox } from 'react-native-ui-lib';
 
 interface CheckboxComponentProps {
     onChange: (value: boolean) => boolean,
+    isRepeating: boolean
     label: string
 }
 
-const CheckboxComponent: React.FC<CheckboxComponentProps> = ({ onChange,label }) => {
-    const [repeating, setRepeating] = useState(false);
+const CheckboxComponent: React.FC<CheckboxComponentProps> = ({ onChange, label, isRepeating }) => {
+    const [repeating, setRepeating] = useState(isRepeating);
     const handleChange = (value: boolean) => {
         onChange(value)
         setRepeating(value)

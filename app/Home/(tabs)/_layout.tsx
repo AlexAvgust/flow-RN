@@ -20,7 +20,7 @@ export default function _layout() {
 
     const dispatch = useDispatch()
     const { refetch: refetchTaskNames } = useGetTasksNamesByUserQuery(user as User)
-    const { refetch: refetchScheduleOnStartUp } = useGetScheduleByDateQuery({ startDate: currentlySelectedDate, userId: user?._id });
+    const { refetch: refetchScheduleOnStartUp } = useGetScheduleByDateQuery({ startDate: currentlySelectedDate, userId: false });
 
     useEffect(() => {
         refetchScheduleOnStartUp()

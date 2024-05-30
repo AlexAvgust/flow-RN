@@ -7,11 +7,12 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 interface PickerComponentProps {
     items: PickerItemProps[],
     label: string,
+    priority: number,
     onChange: (value: number) => void
 }
 
-const PickerComponent: React.FC<PickerComponentProps> = ({ items, label, onChange }) => {
-    const [values, setValues] = useState(0)
+const PickerComponent: React.FC<PickerComponentProps> = ({ items, label, onChange,priority }) => {
+    const [values, setValues] = useState(priority)
     const handleChange = (value: any) => {
         onChange(value)
         setValues(value)

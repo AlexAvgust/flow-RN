@@ -7,9 +7,10 @@ import { RootState } from '../../../../store/store';
 
 interface AutocompleteDropdownProps {
     onChange: (value: string) => void;
+    name: string;
 }
 
-export const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = memo(({ onChange }) => {
+export const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = memo(({ onChange,name }) => {
     const taskNames = useSelector((state: RootState) => state.task.taskNames);
 
     const onChangeText = (value:string) => {
@@ -19,6 +20,7 @@ export const AutocompleteDropdown: React.FC<AutocompleteDropdownProps> = memo(({
     return (
         <View centerH style={styles.autocompleteContainer}>
             <Autocomplete
+                initialValue={name}
                 containerStyle={styles.autocompleteDropdownStyle}
                 inputStyle={styles.autocompleteInputStyle}
                 inputContainerStyle={styles.taskNameFieldStyle}

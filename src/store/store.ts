@@ -5,6 +5,7 @@ import {
     PAUSE,
     PERSIST,
     PURGE,
+    PersistConfig,
     REGISTER,
     REHYDRATE,
     persistReducer,
@@ -17,6 +18,7 @@ import { scheduleSlice } from './slices/scheduleSlice'
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
+    blacklist: ['api']
 }
 
 const reducers = {

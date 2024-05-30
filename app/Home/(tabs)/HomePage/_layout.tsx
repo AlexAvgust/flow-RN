@@ -9,9 +9,7 @@ export default function _layout() {
             }}
         >
             <Stack.Screen name="index" />
-            <Stack.Screen
-                name="newTask"
-            />
+            <Stack.Screen name="newTask" />
         </Stack>
     )
 }

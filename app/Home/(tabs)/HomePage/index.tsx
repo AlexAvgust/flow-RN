@@ -1,5 +1,4 @@
 import { useFocusEffect, usePathname, useRouter } from 'expo-router'
-import moment from 'moment'
 import React, { useRef } from 'react'
 import { StyleSheet } from 'react-native'
 import { Text, View } from 'react-native-ui-lib'
@@ -8,16 +7,17 @@ import CalendarWithAgenda from '../../../../src/components/HomeScreenComponents/
 import ButtonWithStates from '../../../../src/components/SharedComponents/ButtonWithStates/ButtonWithStates'
 import ScreenSafeContainer from '../../../../src/components/SharedComponents/ScreenSafeContainer/ScreenSafeContainer'
 import { setCurrentlySelectedDate, setSelectedTask } from '../../../../src/store/slices/taskSlice'
+import { formatCurrentDateToReadableString, formatDateToYMD } from '../../../../src/utils/dateHelpers'
 
 
 
 const Homepage = () => {
     const path = usePathname()
-    console.log('path', path)
-    const router = useRouter()
-    const currentDate = moment().format('D MMMM YYYY')
-    const dateRef = useRef(moment().format('YYYY-MM-DD'))
     const dispatch = useDispatch();
+    const router = useRouter()
+    console.log('path', path)
+    const currentDate = formatCurrentDateToReadableString()
+    const dateRef = useRef(formatDateToYMD())
     const onAddNewTaskPress = () => {
         dispatch(setCurrentlySelectedDate(dateRef.current))
         router.push(`${path}/newTask`)
@@ -33,9 +33,7 @@ const Homepage = () => {
                     <Text marginL-20 style={styles.today}>
                         Today, <Text style={styles.date}>{currentDate}</Text>
                     </Text>
-
                     <CalendarWithAgenda dateRef={dateRef} />
-
                 </View>
                 <ButtonWithStates label='Add new task' onPressFunc={onAddNewTaskPress} />
             </View>

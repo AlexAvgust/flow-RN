@@ -1,11 +1,11 @@
-import moment from 'moment';
-import React, { Dispatch, MutableRefObject, useCallback, useMemo } from 'react';
+import React, { Dispatch, useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-ui-lib';
-import { Task } from '../../../types/TaskType';
-import { mapPriorityToColor } from '../../../utils/colorMaper';
 import { useDispatch } from 'react-redux';
 import { setSelectedTask } from '../../../store/slices/taskSlice';
+import { Task } from '../../../types/TaskType';
+import { getFormattedDuration } from '../../../utils/dateHelpers';
+import { mapPriorityToColor } from '../../../utils/priorityMaper';
 
 
 interface ItemProps {
@@ -19,7 +19,7 @@ const AgendaItem: React.FC<ItemProps> = ({ item, setShowDetails }) => {
         setShowDetails(state => !state)
         dispatch(setSelectedTask(item))
     }, []);
-    const taskDuration = useMemo(() => moment.duration(item.taskDuration).format('h [h] m [m]'), [item.taskDuration])
+    const taskDuration = useMemo(() => getFormattedDuration(item.taskDuration), [item.taskDuration])
 
     return (
         <TouchableOpacity onPress={itemPressed} style={[styles.item, { borderRightColor: mapPriorityToColor(item.priority) }]}>

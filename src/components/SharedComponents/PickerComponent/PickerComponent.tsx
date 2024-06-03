@@ -36,7 +36,9 @@ const PickerComponent: React.FC<PickerComponentProps> = ({ items, label, onChang
             }}
             value={values}
             onChange={handleChange}
-            useWheelPicker={true} items={items}
+            // temporary disabled due to problem with styling okay button
+            // useWheelPicker={true}
+            items={items}
             label={label}
         />
     )

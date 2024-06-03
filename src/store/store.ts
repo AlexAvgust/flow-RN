@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore, createAction } from '@reduxjs/toolkit'
 import {
     FLUSH,
     PAUSE,
@@ -18,20 +18,26 @@ import { scheduleSlice } from './slices/scheduleSlice'
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['api']
+    blacklist: ['api'],
 }
+export const revertAll = createAction('REVERT_ALL')
 
-const reducers = {
+const reducers = combineReducers({
     api: api.reducer,
     [userSlice.name]: userSlice.reducer,
     [taskSlice.name]: taskSlice.reducer,
     [scheduleSlice.name]: scheduleSlice.reducer,
+})
+
+const RootReducer = (state: any, action: any) => {
+    if (action.type === revertAll?.type) {
+        state = undefined
+    }
+
+    return reducers(state, action)
 }
 
-const persistedReducer = persistReducer(
-    persistConfig,
-    combineReducers(reducers)
-)
+const persistedReducer = persistReducer(persistConfig, RootReducer)
 
 export const store = configureStore({
     reducer: persistedReducer,
@@ -50,7 +56,6 @@ export const store = configureStore({
         }).concat(api.middleware),
 })
 export const persistor = persistStore(store)
-
 export type RootState = ReturnType<typeof store.getState>
 
 export type AppDispatch = typeof store.dispatch

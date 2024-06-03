@@ -14,13 +14,20 @@ export const scheduleSlice = createSlice({
     initialState,
     reducers: {
         setSchedules: (state, action: PayloadAction<Schedule[]>) => {
-            console.log('updated schedule in slice', action.payload);
+            console.log('updated schedule in slice', action.payload)
+            if (action.payload.length === 0) {
+                state.schedule = []
+            }
             state.schedule = [
-                ...new Map([...state.schedule, ...action.payload].map((item) => [item['_id'], item])).values()
+                ...new Map(
+                    [...state.schedule, ...action.payload].map((item) => [
+                        item['_id'],
+                        item,
+                    ])
+                ).values(),
             ]
         },
-    },
+    }
 })
 
 export const { setSchedules } = scheduleSlice.actions
-

@@ -19,13 +19,12 @@ export const userSlice = createSlice({
             state.user = action.payload
         },
         removeUser: (state) => {
-            state.user = null
-            state.token = null
+            state = initialState
         },
-        addToken: (state,action:PayloadAction<string>) => { 
+        addToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload
-        }
-    },
+        },
+    }
 })
 
 export const { addUser, removeUser, addToken } = userSlice.actions

@@ -1,7 +1,7 @@
-import React, { memo, useCallback, useState } from 'react';
-import { Button, Text, View } from 'react-native-ui-lib';
+import React, { useState } from 'react';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import moment from 'moment';
+import { Button, Text, View } from 'react-native-ui-lib';
+import { convertDateWithTimeToTimeString, convertTimeToFullDate } from '../../../../utils/dateHelpers';
 
 interface TimePickerProps {
   onChange: (value: Date) => void;
@@ -11,7 +11,7 @@ interface TimePickerProps {
 }
 
 const TimePicker: React.FC<TimePickerProps> = ({ fieldName, onChange, startTime, endTime }) => {
-  const initialDate = startTime ? moment(startTime).toDate() : endTime ? moment(endTime).toDate() : new Date();
+  const initialDate = startTime ? convertTimeToFullDate(startTime) : convertTimeToFullDate(endTime)
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<Date>(initialDate);
 
@@ -20,7 +20,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ fieldName, onChange, startTime,
     .map(el => el.charAt(0).toUpperCase() + el.slice(1))
     .join(' ');
 
-  const showDatePicker =() => {
+  const showDatePicker = () => {
     setDatePickerVisibility(true);
   }
 
@@ -34,7 +34,7 @@ const TimePicker: React.FC<TimePickerProps> = ({ fieldName, onChange, startTime,
     hideDatePicker();
   }
 
-  const formattedTime = moment(date).format('HH:mm');
+  const formattedTime = convertDateWithTimeToTimeString(date);
 
   return (
     <View gap-10 marginR row centerV>

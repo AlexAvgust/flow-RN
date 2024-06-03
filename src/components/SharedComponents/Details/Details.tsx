@@ -1,17 +1,15 @@
-import moment from 'moment';
-import 'moment-duration-format';
+import { usePathname, useRouter } from 'expo-router';
 import React, { Dispatch, memo } from 'react';
 import { StyleSheet } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Dialog, PanningProvider, Text, View } from 'react-native-ui-lib';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDeleteTaskMutation } from '../../../api/task/task';
+import { setSelectedTask } from '../../../store/slices/taskSlice';
 import { RootState } from '../../../store/store';
+import { formatCurrentDateToReadableString, getDayOfTheWeek, getFormattedDuration } from '../../../utils/dateHelpers';
 import { getPriorityLabel } from '../../../utils/priorityMaper';
 import ButtonWithStates from '../ButtonWithStates/ButtonWithStates';
-import { usePathname, useRouter } from 'expo-router';
-import { setSelectedTask } from '../../../store/slices/taskSlice';
-import { useDispatch } from 'react-redux';
-import { useDeleteTaskMutation } from '../../../api/task/task';
-import Toast from 'react-native-toast-message';
 
 interface DialogProps {
     isVisible: boolean;
@@ -55,6 +53,7 @@ const Details: React.FC<DialogProps> = ({ isVisible, setShowDetails }) => {
         dispatch(setSelectedTask(null))
         setShowDetails(false);
     }
+console.log('selectedTask: ',JSON.stringify(selectedTask));
 
     return (
         <Dialog
@@ -77,13 +76,13 @@ const Details: React.FC<DialogProps> = ({ isVisible, setShowDetails }) => {
 
                     <Text style={styles.label}>Date:</Text>
                     <Text style={styles.value}>
-                        {moment(selectedTask.taskStartDate).format('D MMMM YYYY')}
+                        {formatCurrentDateToReadableString(selectedTask.taskStartDate)}
                     </Text>
                 </View>
                 <View style={styles.labelAndValueContainer}>
                     <Text style={styles.label}>Day of the week:</Text>
                     <Text style={styles.value}>
-                        {moment(selectedTask.taskStartDate).format('dddd')}
+                        {getDayOfTheWeek(selectedTask.taskStartDate)}
                     </Text>
                 </View>
                 <View style={styles.labelAndValueContainer}>
@@ -93,17 +92,17 @@ const Details: React.FC<DialogProps> = ({ isVisible, setShowDetails }) => {
                 </View>
                 <View style={styles.labelAndValueContainer}>
                     <Text style={styles.label}>Duration:</Text>
-                    <Text style={styles.value}>{moment.duration(selectedTask.taskDuration).format('h [hrs] m [mins]')}
+                    <Text style={styles.value}>{getFormattedDuration(selectedTask.taskDuration, 'full')}
                     </Text>
                 </View>
                 <View style={styles.labelAndValueContainer}>
                     <Text style={styles.label}>Task start time:</Text>
-                    <Text style={styles.value}>{moment(selectedTask.taskStartTime).format('HH:mm')}
+                    <Text style={styles.value}>{selectedTask.taskStartTime}
                     </Text>
                 </View>
                 <View style={styles.labelAndValueContainer}>
                     <Text style={styles.label}>Task end time:</Text>
-                    <Text style={styles.value}>{moment(selectedTask.taskEndTime).format('HH:mm')}
+                    <Text style={styles.value}>{selectedTask.taskEndTime}
                     </Text>
                 </View>
 

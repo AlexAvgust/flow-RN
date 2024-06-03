@@ -1,6 +1,8 @@
 import moment from 'moment'
 import { Schedule } from '../types/Schedule'
 import { Task } from '../types/TaskType'
+import { calculateDaysInMonth } from './dateHelpers'
+import { AgendaSchedule } from 'react-native-calendars'
 
 interface DateFormat {
     startOfTheMonth: string
@@ -10,12 +12,11 @@ interface DateFormat {
 export const convertToAgendaSchedule = (
     schedules: Schedule[],
     date: DateFormat
-) => {
+):AgendaSchedule => {
     const schedulesByDates: [string, Task[]][] = []
 
     const startOfMonth = moment(date.startOfTheMonth)
-    const endOfMonth = moment(date.endOfTheMonth)
-    const daysInMonth = endOfMonth.diff(startOfMonth, 'days') + 1
+    const daysInMonth = calculateDaysInMonth(date.startOfTheMonth, date.endOfTheMonth)
 
     for (let i = 0; i < daysInMonth; i++) {
         const dayInMonth = startOfMonth

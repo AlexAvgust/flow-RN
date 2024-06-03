@@ -1,12 +1,10 @@
-import moment from 'moment';
 import { MutableRefObject, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { AgendaSchedule, DateData } from 'react-native-calendars';
 import { useSelector } from 'react-redux';
-import { useGetScheduleByDateQuery } from '../api/schedule/schedule';
 import { RootState } from '../store/store';
 import { convertToAgendaSchedule } from '../utils/convertToAgendaSchedult';
-import { startAndEndOfTheMonth } from '../utils/startAndEndOfTheMonth';
+import { formatDateToYMD, startAndEndOfTheMonth } from '../utils/dateHelpers';
 import useGetSchedules from './useGetSchedules';
 
 interface DateFormatForReq {
@@ -15,7 +13,7 @@ interface DateFormatForReq {
 
 const useAgendaSchedule = () => {
     const schedules = useSelector((state: RootState) => state.schedule.schedule)
-    const dateRef: MutableRefObject<DateFormatForReq> = useRef(startAndEndOfTheMonth(moment().format('YYYY-MM-DD')))
+    const dateRef: MutableRefObject<DateFormatForReq> = useRef(startAndEndOfTheMonth(formatDateToYMD()))
     const itemsRef: MutableRefObject<AgendaSchedule | undefined> = useRef(undefined)
     const { refetch } = useGetSchedules({
         startDate: dateRef.current.startOfTheMonth,

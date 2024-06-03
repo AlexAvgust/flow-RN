@@ -1,6 +1,5 @@
 import { AntDesign, MaterialIcons, Octicons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
-import moment from 'moment'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../src/store/store'
@@ -20,10 +19,8 @@ export default function _layout() {
 
     const dispatch = useDispatch()
     const { refetch: refetchTaskNames } = useGetTasksNamesByUserQuery(user as User)
-    const { refetch: refetchScheduleOnStartUp } = useGetScheduleByDateQuery({ startDate: currentlySelectedDate, userId: false });
 
     useEffect(() => {
-        refetchScheduleOnStartUp()
         refetchTaskNames()
         
         const tasksForDate = filterScheduleByDate(schedule, currentlySelectedDate)

@@ -1,5 +1,4 @@
 import { useRouter } from 'expo-router';
-import moment from 'moment';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { useAddTaskMutation, useEditTaskMutation } from '../api/task/task';
@@ -7,6 +6,7 @@ import { AddTask } from '../api/task/task.interface';
 import { validationSchema } from '../components/HomeScreenComponents/Form/FormValidation/FormValidation';
 import { RootState } from '../store/store';
 import { Task } from '../types/TaskType';
+import { calculateTaskDuration, convertDateWithTimeToTimeString } from '../utils/dateHelpers';
 import useInitFormValue from './useInitFormValue';
 
 
@@ -36,11 +36,8 @@ const useAddOrEdit = () => {
                 taskAddedBy: 'User',
                 repeating: repeatingRef.current,
             };
-            console.log('values', JSON.stringify(values))
             await validationSchema.validate(values, { abortEarly: false });
-            const startTime = moment(values.start_time).valueOf();
-            const endTime = moment(values.end_time).valueOf();
-            const taskDuration = endTime - startTime;
+            const taskDuration = calculateTaskDuration(values.start_time, values.end_time)
             if (taskDuration < 0) {
                 Toast.show({
                     type: 'info',
@@ -53,8 +50,8 @@ const useAddOrEdit = () => {
                 name: values.task_name,
                 taskStartDate,
                 taskDuration,
-                taskStartTime: values.start_time,
-                taskEndTime: values.end_time,
+                taskStartTime: convertDateWithTimeToTimeString(values.start_time),
+                taskEndTime: convertDateWithTimeToTimeString(values.end_time) ,
                 description: values.description,
                 priority: values.priority,
                 taskAddedBy: values.taskAddedBy,

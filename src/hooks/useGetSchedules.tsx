@@ -17,11 +17,7 @@ const useGetSchedules = (date: DateObjectForGetSchedules, keepCache = false) => 
         { skip: keepCache }
     );
 
-    useFocusEffect(
-        useCallback(() => {
-            refetch();
-        }, [refetch])
-    );
+
 
     return { refetch, isLoading, isSuccess, isFetching };
 };
